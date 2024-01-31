@@ -8,7 +8,7 @@ services:
       - "8000:8000"
     restart: always
     networks:
-      - app-network
+      - app
 
   sql-server:
     container_name: sql-server
@@ -22,7 +22,7 @@ services:
       - ./database/hive.sql:/docker-entrypoint-initdb.d/hive.sql
     restart: always
     networks:
-      - app-network
+      - app
 
   jenkins:
     container_name: jenkins
@@ -35,10 +35,23 @@ services:
     ports:
       - '8080:8080'
     networks:
-      - app-network
+      - app
 
+  SonarQube:
+    container_name: SonarQube
+    image: sonarqube:latest
+    restart: always
+    volumes:
+      - sonarqube-data:/opt/sonar-mf-cube/data
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    ports:
+      - '9000:9000'
+    networks:
+      - app
 
 volumes:
   jenkins-data:
+  sonarqube-data:
 networks:
-  app-network:
+  app:
