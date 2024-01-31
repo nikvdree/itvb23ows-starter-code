@@ -7,6 +7,8 @@ services:
     ports:
       - "8000:8000"
     restart: always
+    networks:
+      - app-network
 
   sql-server:
     container_name: sql-server
@@ -19,3 +21,24 @@ services:
     volumes:
       - ./database/hive.sql:/docker-entrypoint-initdb.d/hive.sql
     restart: always
+    networks:
+      - app-network
+
+  jenkins:
+    container_name: jenkins
+    build:
+      context: jenkins
+      dockerfile: Dockerfile
+    volumes:
+      - jenkins-data:/var/jenkins_home
+    restart: always
+    ports:
+      - '8080:8080'
+    networks:
+      - app-network
+
+
+volumes:
+  jenkins-data:
+networks:
+  app-network:
