@@ -32,6 +32,10 @@ services:
     volumes:
       - jenkins-data:/var/jenkins_home
     restart: always
+    depends_on:
+      - SonarQube
+    environment:
+      SONARQUBE_PORT: 9000
     ports:
       - '8080:8080'
     networks:
