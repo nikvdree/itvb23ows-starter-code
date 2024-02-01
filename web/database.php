@@ -1,18 +1,18 @@
 <?php
 
-function get_state() {
+function getState() {
     return serialize([$_SESSION['hand'], $_SESSION['board'], $_SESSION['player']]);
 }
 
-function set_state($state) {
+function setState($state) {
     list($a, $b, $c) = unserialize($state);
     $_SESSION['hand'] = $a;
     $_SESSION['board'] = $b;
     $_SESSION['player'] = $c;
 }
 
-function get_db(){
-    return new mysqli('sql-server', 'root', 'root', 'hive');
+function getDb(){
+    return new mysqli('sql-server', $_ENV['SQL_USER'], $_ENV['SQL_PASS'], 'hive');
 }
 
 
