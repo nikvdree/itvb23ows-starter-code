@@ -147,7 +147,12 @@
             <select name="to">
                 <?php
                     foreach ($to as $pos) {
-                        echo "<option value=\"$pos\">$pos</option>";
+                        if (empty($board)){
+                            echo "<option value=\"$pos\">$pos</option>";
+                        }
+                        elseif(!in_array($pos, $board)) {
+                                echo "<option value=\"$pos\">$pos</option>";
+                        }
                     }
                 ?>
             </select>
