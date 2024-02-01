@@ -13,4 +13,3 @@ function set_state($state) {
 
 return new mysqli('localhost', 'root', 'root', 'hive');
 
-?>
