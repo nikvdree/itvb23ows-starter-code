@@ -11,8 +11,6 @@ function setState($state) {
     $_SESSION['player'] = $c;
 }
 
-function getDb(){
-    return new mysqli('sql-server', $_ENV['SQL_USER'], $_ENV['SQL_PASS'], 'hive');
-}
+return new mysqli('sql-server', 'root', 'root', 'hive');
 
 
