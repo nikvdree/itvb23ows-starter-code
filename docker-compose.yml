@@ -33,7 +33,7 @@ services:
       - jenkins-data:/var/jenkins_home
     restart: always
     depends_on:
-      - SonarQube
+      - sonar
     environment:
       SONARQUBE_PORT: 9000
     ports:
@@ -41,8 +41,8 @@ services:
     networks:
       - app
 
-  SonarQube:
-    container_name: SonarQube
+  sonar:
+    container_name: sonar
     image: sonarqube:latest
     restart: always
     volumes:
