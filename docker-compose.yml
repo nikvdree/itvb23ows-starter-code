@@ -54,6 +54,16 @@ services:
     networks:
       - app
 
+  hive-ai:
+    container_name: hive-ai
+    build:
+      context: ai
+      dockerfile: Dockerfile
+    ports:
+      - '7000:7000'
+    networks:
+      - app
+
 volumes:
   jenkins-data:
   sonarqube-data:
