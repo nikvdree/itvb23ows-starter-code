@@ -5,6 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building'
+                sh 'composer install'
             }
         }
         stage('SonarQube') {
@@ -18,6 +19,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing'
+                sh '/vendor/bin/phpunit'
             }
         }
         stage('Deploy') {
