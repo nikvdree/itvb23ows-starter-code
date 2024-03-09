@@ -16,7 +16,7 @@
 <html lang="utf-8">
     <head>
         <title>Hive</title>
-        <link rel="stylesheet" href="../style/style.css">
+        <link rel="stylesheet" href="style/style.css">
     </head>
     <body>
         <div class="board">
