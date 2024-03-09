@@ -1,6 +1,5 @@
 <?php
 
-namespace test\web\test;
 
 use PHPUnit\Framework\TestCase;
 
