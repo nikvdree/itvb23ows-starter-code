@@ -1,11 +1,15 @@
 pipeline {
     agent any
-
     stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out'
+                checkout scm
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building'
-                sh '/vendor/bin/composer install'
             }
         }
         stage('SonarQube') {
@@ -18,8 +22,10 @@ pipeline {
                 }
         stage('Test') {
             steps {
-                echo 'Testing'
-                sh '/vendor/bin/phpunit'
+                dir('web') {
+                    echo 'Testing'
+                    sh '/vendor/bin/phpunit /tests'
+                }
             }
         }
         stage('Deploy') {
@@ -28,4 +34,12 @@ pipeline {
             }
         }
     }
-}
+    post {
+        success {
+            echo 'Succes!'
+        }
+        failure {
+            echo 'Failure!'
+        }
+    }
+ }
