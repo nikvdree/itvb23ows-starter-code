@@ -6,3 +6,4 @@ include_once 'Game.php';
 
 $game = new Game();
 $game->restart();
+header('Location: index.php');

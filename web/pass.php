@@ -4,3 +4,4 @@ session_start();
 
 $game = new Game();
 $game->pass();
+header('Location: index.php');

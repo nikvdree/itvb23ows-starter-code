@@ -1,6 +1,6 @@
 <?php
 include_once 'DBO.php';
-
+include_once 'util.php';
 class Game
 {
 
@@ -28,8 +28,8 @@ class Game
 
     private function createGame(){
         $this->db = new DBO();
-        $this->db->prepare('INSERT INTO games VALUES ()')->execute();
-        return $this->db->insert_id;
+        $result = $this->db->prepare('INSERT INTO games VALUES ()')->execute();
+        return $result;
     }
 
     /**
@@ -88,8 +88,6 @@ class Game
     }
 
     public function play(): void{
-        include_once 'util.php';
-
         $piece = $_POST['piece'];
         $to = $_POST['to'];
 
@@ -116,18 +114,16 @@ class Game
             $_SESSION['hand'][$player][$piece]--;
             $_SESSION['player'] = 1 - $_SESSION['player'];
             $db = new DBO();
+            $string = serialize([$_SESSION['hand'], $_SESSION['board'], $_SESSION['player']]);
             $stmt = $db->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "play", ?, ?, ?, ?)');
-            $stmt->bind_param('issis', $_SESSION['game_id'], $piece, $to, $_SESSION['last_move'], $this->db->getState());
+            $string = serialize([$_SESSION['hand'], $_SESSION['board'], $_SESSION['player']]);
+            $stmt->bind_param('issis', $_SESSION['game_id'], $piece, $to, $_SESSION['last_move'], $string);
             $stmt->execute();
-            $_SESSION['last_move'] = $db->insert_id();
+            $_SESSION['last_move'] = $stmt->insert_id;
         }
-
-        header('Location: index.php');
     }
 
     public function move():void{
-        include_once 'util.php';
-
         $from = $_POST['from'];
         $to = $_POST['to'];
 
@@ -200,7 +196,6 @@ class Game
             $_SESSION['board'] = $board;
         }
 
-        header('Location: index.php');
     }
 
     public function pass():void{
@@ -211,11 +206,9 @@ class Game
         $_SESSION['last_move'] = $db->insert_id;
         $_SESSION['player'] = 1 - $_SESSION['player'];
 
-        header('Location: index.php');
     }
 
     public function restart():void{
-
         $_SESSION['board'] = [];
         $_SESSION['hand'] = [0 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3], 1 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3]];
         $_SESSION['player'] = 0;
@@ -224,7 +217,6 @@ class Game
         $db->prepare('INSERT INTO games VALUES ()')->execute();
         $_SESSION['game_id'] = $db->insert_id;
 
-        header('Location: index.php');
     }
 
     public function undo():void{
@@ -234,7 +226,6 @@ class Game
         $result = $stmt->get_result()->fetch_array();
         $_SESSION['last_move'] = $result[5];
         setState($result[6]);
-        header('Location: index.php');
     }
 
 }
