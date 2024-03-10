@@ -31,4 +31,8 @@ class DBO
     public function error() {
         return $this->db->error;
     }
+
+    public function insert_id() {
+        return $this->db->insert_id;
+    }
 }
