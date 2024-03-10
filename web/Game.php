@@ -202,4 +202,39 @@ class Game
 
         header('Location: index.php');
     }
+
+    public function pass():void{
+        $db = new DBO();
+        $stmt = $db->prepare('insert into moves (game_id, type, move_from, move_to, previous_id, state) values (?, "pass", null, null, ?, ?)');
+        $stmt->bind_param('iis', $_SESSION['game_id'], $_SESSION['last_move'], $this->db->getState());
+        $stmt->execute();
+        $_SESSION['last_move'] = $db->insert_id;
+        $_SESSION['player'] = 1 - $_SESSION['player'];
+
+        header('Location: index.php');
+    }
+
+    public function restart():void{
+
+        $_SESSION['board'] = [];
+        $_SESSION['hand'] = [0 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3], 1 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3]];
+        $_SESSION['player'] = 0;
+
+        $db = new DBO();
+        $db->prepare('INSERT INTO games VALUES ()')->execute();
+        $_SESSION['game_id'] = $db->insert_id;
+
+        header('Location: index.php');
+    }
+
+    public function undo():void{
+        $db = new DBO();
+        $stmt = $db->prepare('SELECT * FROM moves WHERE id = '.$_SESSION['last_move']);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_array();
+        $_SESSION['last_move'] = $result[5];
+        setState($result[6]);
+        header('Location: index.php');
+    }
+
 }
