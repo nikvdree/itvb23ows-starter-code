@@ -1,4 +1,5 @@
 <?php
+include_once 'DBO.php';
 
 class PageBuilder
 {
@@ -9,11 +10,14 @@ class PageBuilder
     public function __construct($game)
     {
         $this->game = $game;
-        $this->db = include_once 'database.php';
+        $this->db = new DBO();
     }
 
     public function printMoveHistory(){
         $stmt = $this->db->prepare('SELECT * FROM moves WHERE game_id = '.$this->game->getGameId());
+        if ($stmt === false) {
+            return;
+        }
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_array()) {

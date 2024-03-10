@@ -1,6 +1,5 @@
 <?php
-
-
+include_once 'DBO.php';
 
 class Game
 {
@@ -28,7 +27,7 @@ class Game
     }
 
     private function createGame(){
-        $this->db = include_once 'database.php';
+        $this->db = new DBO();
         $this->db->prepare('INSERT INTO games VALUES ()')->execute();
         return $this->db->insert_id;
     }
