@@ -9,6 +9,7 @@ services:
     restart: always
     volumes:
       - ./web/:/var/www/html/
+      - app:/var/www/html
     networks:
       - app
 
@@ -33,6 +34,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - jenkins-data:/var/jenkins_home
+      - app:/var/www/html
     restart: always
     depends_on:
       - sonar
@@ -67,6 +69,7 @@ services:
       - app
 
 volumes:
+  app:
   jenkins-data:
   sonarqube-data:
 networks:

@@ -2,7 +2,7 @@
 
 
 use PHPUnit\Framework\TestCase;
-include_once '../Game.php';
+include_once '/var/www/html/Game.php';
 
 class GameTest extends TestCase
 {
