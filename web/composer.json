@@ -1,5 +1,8 @@
 {
   "require-dev": {
     "phpunit/phpunit": "^10"
+  },
+  "require": {
+    "ext-mysqli": "*"
   }
 }

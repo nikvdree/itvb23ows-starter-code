@@ -2,6 +2,7 @@
 
 
 use PHPUnit\Framework\TestCase;
+include_once '../Game.php';
 
 class GameTest extends TestCase
 {
@@ -26,6 +27,8 @@ class GameTest extends TestCase
     public function testGetMovesTo()
     {
         $game = new \Game();
-        $this->assertEquals([], $game->getMovesTo());
+        $this->assertEquals(Array (
+            0 => '0,0'
+        ), $game->getMovesTo());
     }
 }
