@@ -12,6 +12,11 @@ pipeline {
                 echo 'Building'
             }
         }
+        stage('Test') {
+            steps {
+                echo 'Testing'
+            }
+        }
         stage('SonarQube') {
                     steps {
                         script { scannerHome = tool 'SonarQube Scanner' }
@@ -20,14 +25,6 @@ pipeline {
                         }
                     }
                 }
-        stage('Test') {
-            steps {
-                dir('web') {
-                    echo 'Testing'
-                    sh '/vendor/bin/phpunit /tests'
-                }
-            }
-        }
         stage('Deploy') {
             steps {
                 echo 'Deploying'
