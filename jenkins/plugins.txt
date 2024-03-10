@@ -19,3 +19,5 @@ timestamper:latest
 workflow-aggregator:latest
 ws-cleanup:latest
 sonar:latest
+docker-commons:latest
+docker-workflow:latest
