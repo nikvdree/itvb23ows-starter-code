@@ -12,8 +12,12 @@ class Player
     private array $hand;
     private int $player;
 
-    function __construct($player){
+    function __construct($player, $hand= null){
         $this->player = $player;
+        if ($hand != null){
+            $this->createHand($hand);
+            return;
+        }
         $this->hand = array(new Queen(),
             new Beetle(),
             new Beetle(),
@@ -31,6 +35,28 @@ class Player
     public function getHand(): array
     {
         return $this->hand;
+    }
+
+    public function createHand($hand){
+        foreach ($hand as $insect){
+            switch ($insect){
+                case 'Q':
+                    $this->hand[] = new Queen();
+                    break;
+                case 'B':
+                    $this->hand[] = new Beetle();
+                    break;
+                case 'S':
+                    $this->hand[] = new Spider();
+                    break;
+                case 'A':
+                    $this->hand[] = new Ant();
+                    break;
+                case 'G':
+                    $this->hand[] = new Grasshopper();
+                    break;
+            }
+        }
     }
 
     public function hasInsect($insect):bool{
@@ -70,12 +96,22 @@ class Player
         return $this->hasInsect('Q');
     }
 
-    public function getHandArray(){
+    public function getHandArray(): array
+    {
         $handArray = array();
         foreach ($this->hand as $insect){
             $handArray[] = $insect->getName();
         }
         return $handArray;
+    }
+
+    public function removeInsect($type){
+        foreach ($this->hand as $key => $insect){
+            if($insect->getName() == $type){
+                unset($this->hand[$key]);
+                return;
+            }
+        }
     }
 
 

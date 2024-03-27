@@ -40,9 +40,9 @@ class Game
         }
         else {
             $this->game_id = $_SESSION['game_id'];
-            $this->players = [new Player(0), new Player(1)];
+            $this->players = [new Player(0, $_SESSION['hand'][0]), new Player(1, $_SESSION['hand'][1])];
             $this->board = new Board($_SESSION['board']);
-            $this->hand = $_SESSION['hand'];
+            $this->hand = $this->players[$_SESSION['player']]->getHandArray();
             $this->currentPlayer = $_SESSION['player'];
         }
         $this->pieceMovesTo = $this->setPieceMovesTo();
@@ -116,7 +116,7 @@ class Game
 
         $player = $this->currentPlayer;
         $board = $this->board->getBoard();
-        $hand = $this->players[$player]->getHand();
+        $handArray = $this->players[$player]->getHandArray();
 
         if (!$this->players[$player]->hasInsect($piece)) {
             $_SESSION['error'] = "Player does not have tile";
@@ -124,13 +124,14 @@ class Game
             $_SESSION['error'] = 'Board position is not empty';
         } elseif (count($board) && !hasNeighBour($to, $board)) {
             $_SESSION['error'] = "board position has no neighbour";
-        } elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board)) {
-            $_SESSION['error'] = "Board position has opposing neighbour";
-        } elseif ($piece != 'Q' && array_sum($hand) <= 8 && $this->players[$player]->hasQueen()) {
+//        } elseif (array_sum($handArray) < 11 && !neighboursAreSameColor($player, $to, $board)) {
+//            $_SESSION['error'] = "Board position has opposing neighbour" . print_r($handArray, true);
+        } elseif ($piece != 'Q' && array_sum($handArray) <= 8 && $this->players[$player]->hasQueen()) {
             $_SESSION['error'] = 'Must play queen bee';
         } else {
             $_SESSION['board'][$to] = [[$_SESSION['player'], $piece]];
-            $_SESSION['hand'][$player][$piece]--;
+            $this->players[$player]->removeInsect($piece);
+            $_SESSION['hand'][$player] = $this->players[$player]->getHandArray();
             $_SESSION['player'] = 1 - $_SESSION['player'];
             $_SESSION['last_move'] = $this->db->playMove($_SESSION['game_id'], $piece, $to, $this->db->getState($_SESSION['game_id']), $_SESSION['last_move']);
         }
