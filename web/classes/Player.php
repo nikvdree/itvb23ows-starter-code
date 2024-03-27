@@ -26,6 +26,8 @@ class Player
             new Ant(),
             new Ant(),
             new Ant(),
+            new Grasshopper(),
+            new Grasshopper(),
             new Grasshopper());
     }
 

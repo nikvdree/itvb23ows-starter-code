@@ -125,9 +125,9 @@ class Game
             $_SESSION['error'] = 'Board position is not empty';
         } elseif (count($board) && !hasNeighBour($to, $board)) {
             $_SESSION['error'] = "board position has no neighbour";
-//        } elseif (array_sum($handArray) < 11 && !neighboursAreSameColor($player, $to, $board)) {
-//            $_SESSION['error'] = "Board position has opposing neighbour" . print_r($handArray, true);
-        } elseif ($piece != 'Q' && array_sum($handArray) <= 8 && $this->players[$player]->hasQueen()) {
+        } elseif (len($handArray) < 11 && !neighboursAreSameColor($player, $to, $board)) {
+            $_SESSION['error'] = "Board position has opposing neighbour";
+        } elseif ($piece != 'Q' && len($handArray) <= 8 && $this->players[$player]->hasQueen()) {
             $_SESSION['error'] = 'Must play queen bee';
         } else {
             $_SESSION['board'][$to] = [[$_SESSION['player'], $piece]];
