@@ -2,7 +2,7 @@
 
 
 use PHPUnit\Framework\TestCase;
-include_once '/var/www/html/Game.php';
+include_once '../Game.php';
 
 class GameTest extends TestCase
 {
@@ -30,5 +30,34 @@ class GameTest extends TestCase
         $this->assertEquals(Array (
             0 => '0,0'
         ), $game->getMovesTo());
+    }
+
+    public function testRestart(){
+        $game = new \Game();
+        $_POST['piece'] = 'Q';
+        $_POST['to'] = '0,0';
+        $game->play();
+        $game->restart();
+        $this->assertEquals([], $game->getBoard());
+    }
+
+    public function testCreateGame(){
+        $game = new \Game();
+        $this->assertEquals([], $game->getBoard());
+    }
+
+    public function testPlay(){
+        $game = new \Game();
+        $_POST['piece'] = 'Q';
+        $_POST['to'] = '0,0';
+        $game->play();
+        $this->assertEquals(Array (
+            '0,0' => Array (
+                0 => Array (
+                    0 => 0,
+                    1 => 'Q'
+                )
+            )
+        ), $_SESSION['board']);
     }
 }

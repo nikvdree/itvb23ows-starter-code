@@ -112,7 +112,7 @@ class Game
             $_SESSION['board'][$to] = [[$_SESSION['player'], $piece]];
             $_SESSION['hand'][$player][$piece]--;
             $_SESSION['player'] = 1 - $_SESSION['player'];
-            $_SESSION['last_move'] = $this->db->playMove($_SESSION['game_id'], $piece, $to, $this->db->getState(), $_SESSION['last_move']);
+            $_SESSION['last_move'] = $this->db->playMove($_SESSION['game_id'], $piece, $to, $this->db->getState($_SESSION['game_id']), $_SESSION['last_move']);
         }
     }
 
@@ -196,6 +196,8 @@ class Game
         $_SESSION['board'] = [];
         $_SESSION['hand'] = [0 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3], 1 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3]];
         $_SESSION['player'] = 0;
+        $_SESSION['last_move'] = 0;
+        $_SESSION['error'] = '';
         $_SESSION['game_id'] = $this->createGame();
     }
 
