@@ -1,4 +1,7 @@
 <?php
+
+use classes\Game;
+
 include_once 'Game.php';
 session_start();
 

@@ -1,34 +1,39 @@
 <?php
+
+namespace classes;
+
 include_once 'DBO.php';
 
 class PageBuilder
 {
 
-    private $db;
-    private $game;
+    private DBO $db;
+    private Game $game;
 
     public function __construct($game)
     {
-        $this->game = $game;
         $this->db = new DBO();
+        $this->game = $game;
     }
 
-    public function printMoveHistory(){
+    public function printMoveHistory()
+    {
         $result = $this->db->getMoves($this->game->getGameId());
         while ($row = $result->fetch_array()) {
-            echo '<li>'.$row[2].' '.$row[3].' '.$row[4].'</li>';
+            echo '<li>' . $row[2] . ' ' . $row[3] . ' ' . $row[4] . '</li>';
         }
     }
 
-    public function printHand($player){
-        foreach ($this->game->getHand()[$player] as $tile => $ct) {
-            for ($i = 0; $i < $ct; $i++) {
-                echo '<div class="tile player'.$player.'"><span>'.$tile."</span></div> ";
-            }
+    public function printHand($player)
+    {
+        foreach ($this->game->getPlayer($player)->getHand() as $ct) {
+            echo '<div class="tile player' . $player . '"><span>' . $ct->getName() . "</span></div> ";
+
         }
     }
 
-    public function printBoard(){
+    public function printBoard()
+    {
         $min_p = 1000;
         $min_q = 1000;
         foreach ($this->game->getBoard() as $pos => $tile) {
@@ -46,46 +51,49 @@ class PageBuilder
             $pq[1];
             $h = count($tile);
             echo '<div class="tile player';
-            echo $tile[$h-1][0];
+            echo $tile[$h - 1][0];
             if ($h > 1) echo ' stacked';
             echo '" style="left: ';
             echo ($pq[0] - $min_p) * 4 + ($pq[1] - $min_q) * 2;
             echo 'em; top: ';
             echo ($pq[1] - $min_q) * 4;
             echo "em;\">($pq[0],$pq[1])<span>";
-            echo $tile[$h-1][1];
+            echo $tile[$h - 1][1];
             echo '</span></div>';
         }
     }
 
-    public function printMoveTo(){
+    public function printMoveTo()
+    {
         foreach ($this->game->getMovesTo() as $pos) {
             echo "<option value=\"$pos\">$pos</option>";
         }
     }
 
-    public function printMoveFrom(){
+    public function printMoveFrom()
+    {
         foreach (array_filter($this->game->getBoard()) as $pos => $tile) {
             $h = count($tile);
-            if ($tile[$h-1][0] == $this->game->getPlayer()){
+            if ($tile[$h - 1][0] == $this->game->getCurrentPlayer()) {
                 echo "<option value=\"$pos\">$pos</option>";
             }
         }
     }
 
-    public function printPlayTo(){
+    public function printPlayTo()
+    {
         foreach ($this->game->getMovesTo() as $pos) {
-            if (empty($this->game->getBoard())){
+            if (empty($this->game->getBoard())) {
                 echo "<option value=\"$pos\">$pos</option>";
-            }
-            elseif(!in_array($pos, $this->game->getBoard())) {
+            } elseif (!in_array($pos, $this->game->getBoard())) {
                 echo "<option value=\"$pos\">$pos</option>";
             }
         }
     }
 
-    public function printPiecesAvailable(){
-        foreach ($this->game->getHand()[$this->game->getPlayer()] as $tile => $ct) {
+    public function printPiecesAvailable()
+    {
+        foreach ($this->game->getHand()[$this->game->getCurrentPlayer()] as $tile => $ct) {
             if ($ct > 0) {
                 echo "<option value=\"$tile\">$tile</option>";
             }

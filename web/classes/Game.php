@@ -1,34 +1,51 @@
 <?php
+
+namespace classes;
+
 include_once 'DBO.php';
-include_once 'util.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/util.php';
+include_once 'Player.php';
+include_once 'Board.php';
+
+
 class Game
 {
-
-    private $board = [];
-    private $hand = [];
-    private $player = [];
-    private $game_id = 0;
-    private $pieceMovesTo = [];
-    private $db;
+    private int $currentPlayer;
+    private array $players;
+    private Board $board;
+    private int $game_id;
+    private DBO $db;
+    private array $hand;
+    private array $pieceMovesTo;
 
     function __construct()
     {
         $this->db = new DBO();
-        if (!isset($_SESSION['board'])) {
-            $_SESSION['board'] = [];
-            $_SESSION['hand'] = [0 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3], 1 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3]];
-            $_SESSION['player'] = 0;
-            $_SESSION['game_id'] = $this->createGame();
-        }
-        $this->board = $_SESSION['board'];
-        $this->player = $_SESSION['player'];
-        $this->hand = $_SESSION['hand'];
-        $this->game_id = $_SESSION['game_id'];
-        $this->pieceMovesTo = $this->setPieceMovesTo();
+        $this->createGame();
     }
 
-    private function createGame(){
-        return $this->db->createGame();
+    private function createGame(): void
+    {
+        if (!isset($_SESSION['game_id'])){
+            $this->game_id = $this->db->createGame();
+            $this->board = new Board([]);
+            $this->currentPlayer = 0;
+            $this->players = [new Player(0), new Player(1)];
+            $this->hand = $this->players[$this->currentPlayer]->getHand();
+
+            $_SESSION['board'] = $this->board->getBoard();
+            $_SESSION['player'] = $this->players[$this->currentPlayer]->getPlayer();
+            $_SESSION['game_id'] = $this->game_id;
+            $_SESSION['hand'] = $this->hand;
+        }
+        else {
+            $this->game_id = $_SESSION['game_id'];
+            $this->players = [new Player(0), new Player(1)];
+            $this->board = new Board($_SESSION['board']);
+            $this->hand = $_SESSION['hand'];
+            $this->currentPlayer = $_SESSION['player'];
+        }
+        $this->pieceMovesTo = $this->setPieceMovesTo();
     }
 
     /**
@@ -36,7 +53,12 @@ class Game
      */
     public function getBoard(): array
     {
-        return $this->board;
+        return $this->board->getBoard();
+    }
+
+    public function getPlayer($num): Player
+    {
+        return $this->players[$num];
     }
 
     /**
@@ -50,9 +72,9 @@ class Game
     /**
      * @return int
      */
-    public function getPlayer(): int
+    public function getCurrentPlayer(): int
     {
-        return $this->player;
+        return $this->currentPlayer;
     }
 
     /**
@@ -71,12 +93,13 @@ class Game
         return $this->pieceMovesTo;
     }
 
-    private function setPieceMovesTo(){
+    private function setPieceMovesTo()
+    {
         $to = [];
         foreach ($GLOBALS['OFFSETS'] as $pq) {
-            foreach (array_keys($this->board) as $pos) {
+            foreach (array_keys($this->board->getBoard()) as $pos) {
                 $pq2 = explode(',', $pos);
-                $to[] = ($pq[0] + $pq2[0]).','.($pq[1] + $pq2[1]);
+                $to[] = ($pq[0] + $pq2[0]) . ',' . ($pq[1] + $pq2[1]);
             }
         }
         $to = array_unique($to);
@@ -86,27 +109,24 @@ class Game
         return $to;
     }
 
-    public function play(): void{
+    public function play(): void
+    {
         $piece = $_POST['piece'];
         $to = $_POST['to'];
 
-        $player = $_SESSION['player'];
-        $board = $_SESSION['board'];
-        $hand = $_SESSION['hand'][$player];
+        $player = $this->currentPlayer;
+        $board = $this->board->getBoard();
+        $hand = $this->players[$player]->getHand();
 
-        if (!$hand[$piece]) {
+        if (!$this->players[$player]->hasInsect($piece)) {
             $_SESSION['error'] = "Player does not have tile";
-        }
-        elseif (isset($board[$to])) {
+        } elseif (isset($board[$to])) {
             $_SESSION['error'] = 'Board position is not empty';
-        }
-        elseif (count($board) && !hasNeighBour($to, $board)) {
+        } elseif (count($board) && !hasNeighBour($to, $board)) {
             $_SESSION['error'] = "board position has no neighbour";
-        }
-        elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board)) {
+        } elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board)) {
             $_SESSION['error'] = "Board position has opposing neighbour";
-        }
-        elseif (array_sum($hand) <= 8 && $hand['Q']) {
+        } elseif (array_sum($hand) <= 8 && $hand['Q']) {
             $_SESSION['error'] = 'Must play queen bee';
         } else {
             $_SESSION['board'][$to] = [[$_SESSION['player'], $piece]];
@@ -116,7 +136,8 @@ class Game
         }
     }
 
-    public function move():void{
+    public function move(): void
+    {
         $from = $_POST['from'];
         $to = $_POST['to'];
 
@@ -127,7 +148,7 @@ class Game
 
         if (!isset($board[$from]))
             $_SESSION['error'] = 'Board position is empty';
-        elseif ($board[$from][count($board[$from])-1][0] != $player)
+        elseif ($board[$from][count($board[$from]) - 1][0] != $player)
             $_SESSION['error'] = "Tile is not owned by player";
         elseif ($hand['Q'])
             $_SESSION['error'] = "Queen bee is not played";
@@ -155,11 +176,9 @@ class Game
                 } else {
                     if ($from == $to) {
                         $_SESSION['error'] = 'Tile must move';
-                    }
-                    elseif (isset($board[$to]) && $tile[1] != "B") {
+                    } elseif (isset($board[$to]) && $tile[1] != "B") {
                         $_SESSION['error'] = 'Tile not empty';
-                    }
-                    elseif ($tile[1] == "Q" || $tile[1] == "B") {
+                    } elseif ($tile[1] == "Q" || $tile[1] == "B") {
                         if (!slide($board, $from, $to))
                             $_SESSION['error'] = 'Tile must slide';
                     }
@@ -168,15 +187,13 @@ class Game
             if (isset($_SESSION['error'])) {
                 if (isset($board[$from])) {
                     array_push($board[$from], $tile);
-                }
-                else {
+                } else {
                     $board[$from] = [$tile];
                 }
             } else {
                 if (isset($board[$to])) {
                     array_push($board[$to], $tile);
-                }
-                else {
+                } else {
                     $board[$to] = [$tile];
                 }
                 $_SESSION['player'] = 1 - $_SESSION['player'];
@@ -187,12 +204,14 @@ class Game
 
     }
 
-    public function pass():void{
+    public function pass(): void
+    {
         $_SESSION['last_move'] = $this->db->pass($_SESSION['game_id'], $_SESSION['last_move'], $this->db->getState());
         $_SESSION['player'] = 1 - $_SESSION['player'];
     }
 
-    public function restart():void{
+    public function restart(): void
+    {
         $_SESSION['board'] = [];
         $_SESSION['hand'] = [0 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3], 1 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3]];
         $_SESSION['player'] = 0;
@@ -201,7 +220,8 @@ class Game
         $_SESSION['game_id'] = $this->createGame();
     }
 
-    public function undo():void{
+    public function undo(): void
+    {
         setState($this->db->undoMove($_SESSION['last_move']));
     }
 

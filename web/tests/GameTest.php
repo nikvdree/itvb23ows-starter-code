@@ -2,6 +2,7 @@
 
 
 use PHPUnit\Framework\TestCase;
+
 include_once '../Game.php';
 
 class GameTest extends TestCase
@@ -9,31 +10,31 @@ class GameTest extends TestCase
 
     public function testGetPlayer()
     {
-        $game = new \Game();
-        $this->assertEquals(0, $game->getPlayer());
+        $game = new classes\Game();
+        $this->assertEquals(0, $game->getCurrentPlayer());
     }
     public function testGetHand()
     {
-        $game = new \Game();
+        $game = new classes\Game();
         $this->assertEquals([0 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3], 1 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3]], $game->getHand());
     }
 
     public function testGetBoard()
     {
-        $game = new \Game();
+        $game = new classes\Game();
         $this->assertEquals([], $game->getBoard());
     }
 
     public function testGetMovesTo()
     {
-        $game = new \Game();
+        $game = new classes\Game();
         $this->assertEquals(Array (
             0 => '0,0'
         ), $game->getMovesTo());
     }
 
     public function testRestart(){
-        $game = new \Game();
+        $game = new classes\Game();
         $_POST['piece'] = 'Q';
         $_POST['to'] = '0,0';
         $game->play();
@@ -42,12 +43,12 @@ class GameTest extends TestCase
     }
 
     public function testCreateGame(){
-        $game = new \Game();
+        $game = new classes\Game();
         $this->assertEquals([], $game->getBoard());
     }
 
     public function testPlay(){
-        $game = new \Game();
+        $game = new classes\Game();
         $_POST['piece'] = 'Q';
         $_POST['to'] = '0,0';
         $game->play();

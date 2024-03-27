@@ -1,9 +1,13 @@
 <?php
-    session_start();
 
-    include_once 'util.php';
-    include_once 'Game.php';
-    include_once 'PageBuilder.php';
+use classes\Game;
+use classes\PageBuilder;
+
+session_start();
+
+    include_once './util.php';
+    include_once './classes/Game.php';
+    include_once './classes/PageBuilder.php';
 
     $game = new Game();
     $pageBuilder = new PageBuilder($game);
@@ -38,7 +42,7 @@
         </div>
         <div class="turn">
             Turn:
-            <?php if ($game->getPlayer() == $WHITE) {
+            <?php if ($game->getCurrentPlayer() == $WHITE) {
                 echo "White";
             } else {
                 echo "Black";

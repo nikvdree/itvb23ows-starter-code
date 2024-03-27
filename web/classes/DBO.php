@@ -1,19 +1,23 @@
 <?php
 
+namespace classes;
+use mysqli;
+
 class DBO
 {
     private mysqli $db;
 
     function __construct()
     {
-        $db = new mysqli('sql-server', 'root', 'root', 'hive');
+        $db = new mysqli('127.0.0.1', 'root', 'root', 'hive');
         if ($db->connect_error) {
             die("Connection failed: " . $db->connect_error);
         }
         $this->db = $db;
     }
 
-    public function createGame(): bool{
+    public function createGame(): bool
+    {
         $db = $this->db;
         $db->prepare('INSERT INTO games VALUES ()')->execute();
         return $db->insert_id;
@@ -36,7 +40,6 @@ class DBO
         $stmt->execute();
         return $db->insert_id;
     }
-
 
 
     public function undoMove($lastMove)

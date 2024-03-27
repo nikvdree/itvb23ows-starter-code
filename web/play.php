@@ -1,5 +1,8 @@
 <?php
-include_once 'Game.php';
+
+use classes\Game;
+
+include_once './classes/Game.php';
 
 session_start();
 
