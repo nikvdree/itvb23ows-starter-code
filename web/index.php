@@ -95,6 +95,7 @@ session_start();
         <form method="post" action="undo.php">
             <input type="submit" value="Undo">
         </form>
+        <h1>Hive: <?php echo $game->getGameId()?></h1>
     </body>
 </html>
 

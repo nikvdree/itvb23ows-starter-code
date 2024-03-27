@@ -26,17 +26,18 @@ class Game
 
     private function createGame(): void
     {
-        if (!isset($_SESSION['game_id'])){
+        if (!isset($_SESSION['board'])){
             $this->game_id = $this->db->createGame();
             $this->board = new Board([]);
             $this->currentPlayer = 0;
             $this->players = [new Player(0), new Player(1)];
             $this->hand = [0 => $this->players[0]->getHandArray(), 1 => $this->players[1]->getHandArray()];
-
+            $_SESSION['error'] = 'Creating Game: ' . $this->game_id;
             $_SESSION['board'] = $this->board->getBoard();
             $_SESSION['player'] = $this->players[$this->currentPlayer]->getPlayer();
             $_SESSION['game_id'] = $this->game_id;
             $_SESSION['hand'] = [0 => $this->players[0]->getHandArray(), 1 => $this->players[1]->getHandArray()];
+            $_SESSION['last_move'] = 0;
         }
         else {
             $this->game_id = $_SESSION['game_id'];

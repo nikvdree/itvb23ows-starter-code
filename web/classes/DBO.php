@@ -16,7 +16,7 @@ class DBO
         $this->db = $db;
     }
 
-    public function createGame(): bool
+    public function createGame(): int
     {
         $db = $this->db;
         $db->prepare('INSERT INTO games VALUES ()')->execute();
