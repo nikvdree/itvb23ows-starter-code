@@ -66,4 +66,12 @@ class DBO
         $stmt->execute();
         return $stmt->get_result();
     }
+
+    public function getState($gameId)
+    {
+        $db = $this->db;
+        $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = ' . $gameId . ' ORDER BY id DESC LIMIT 1');
+        $stmt->execute();
+        return $stmt->get_result()->fetch_array()['state'];
+    }
 }
