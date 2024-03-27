@@ -66,6 +66,18 @@ class Player
         return false;
     }
 
+    public function hasQueen():bool{
+        return $this->hasInsect('Q');
+    }
+
+    public function getHandArray(){
+        $handArray = array();
+        foreach ($this->hand as $insect){
+            $handArray[] = $insect->getName();
+        }
+        return $handArray;
+    }
+
 
     public function getPlayer()
     {

@@ -31,12 +31,12 @@ class Game
             $this->board = new Board([]);
             $this->currentPlayer = 0;
             $this->players = [new Player(0), new Player(1)];
-            $this->hand = $this->players[$this->currentPlayer]->getHand();
+            $this->hand = [0 => $this->players[0]->getHandArray(), 1 => $this->players[1]->getHandArray()];
 
             $_SESSION['board'] = $this->board->getBoard();
             $_SESSION['player'] = $this->players[$this->currentPlayer]->getPlayer();
             $_SESSION['game_id'] = $this->game_id;
-            $_SESSION['hand'] = $this->hand;
+            $_SESSION['hand'] = [0 => $this->players[0]->getHandArray(), 1 => $this->players[1]->getHandArray()];
         }
         else {
             $this->game_id = $_SESSION['game_id'];
@@ -126,7 +126,7 @@ class Game
             $_SESSION['error'] = "board position has no neighbour";
         } elseif (array_sum($hand) < 11 && !neighboursAreSameColor($player, $to, $board)) {
             $_SESSION['error'] = "Board position has opposing neighbour";
-        } elseif (array_sum($hand) <= 8 && $hand['Q']) {
+        } elseif ($piece != 'Q' && array_sum($hand) <= 8 && $this->players[$player]->hasQueen()) {
             $_SESSION['error'] = 'Must play queen bee';
         } else {
             $_SESSION['board'][$to] = [[$_SESSION['player'], $piece]];

@@ -93,10 +93,14 @@ class PageBuilder
 
     public function printPiecesAvailable()
     {
-        foreach ($this->game->getHand()[$this->game->getCurrentPlayer()] as $tile => $ct) {
-            if ($ct > 0) {
-                echo "<option value=\"$tile\">$tile</option>";
+        $vals = [];
+        foreach ($this->game->getPlayer($this->game->getCurrentPlayer())->getHand() as $ct) {
+            if (in_array($ct->getName(), $vals)) {
+                continue;
             }
+            $val = $ct->getName();
+            $vals[] = $val;
+            echo "<option value=\"$val\">$val</option>";
         }
     }
 }
