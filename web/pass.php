@@ -3,7 +3,7 @@
 use classes\DBO;
 use classes\Game;
 
-include_once 'Game.php';
+include_once './classes/Game.php';
 session_start();
 
 $db = new DBO();

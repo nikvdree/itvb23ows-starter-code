@@ -116,6 +116,29 @@ class Player
         }
     }
 
+    public function setHandArray($arr=[]){
+        $this->hand = [];
+        foreach ($arr as $insect){
+            switch ($insect){
+                case 'Q':
+                    $this->hand[] = new Queen();
+                    break;
+                case 'B':
+                    $this->hand[] = new Beetle();
+                    break;
+                case 'S':
+                    $this->hand[] = new Spider();
+                    break;
+                case 'A':
+                    $this->hand[] = new Ant();
+                    break;
+                case 'G':
+                    $this->hand[] = new Grasshopper();
+                    break;
+            }
+        }
+    }
+
 
     public function getPlayer()
     {

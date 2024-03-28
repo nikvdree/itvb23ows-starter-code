@@ -93,4 +93,13 @@ class GameTest extends TestCase
             5 => '1,-1',
         ), $game->getPlayPieceMovesTo());
     }
+
+    public function testPass()
+    {
+        $db = new DBO();
+        $game = new Game($db);
+        $game->getPlayers()[0]->setHandArray([]);
+        $game->pass();
+        $this->assertEquals(1, $_SESSION['player']);
+    }
 }

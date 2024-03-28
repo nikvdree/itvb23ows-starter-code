@@ -181,8 +181,10 @@ class Game
 
     public function pass(): void
     {
-        $_SESSION['last_move'] = $this->db->pass($_SESSION['game_id'], $_SESSION['last_move'], $this->db->getState());
-        $_SESSION['player'] = 1 - $_SESSION['player'];
+        if ($this->players[$this->getCurrentPlayer()]->getHandArray() == []) {
+            $_SESSION['last_move'] = $this->db->pass($_SESSION['game_id'], $_SESSION['last_move'], $this->db->getState());
+            $_SESSION['player'] = 1 - $_SESSION['player'];
+        }
     }
 
     public function restart(): void
