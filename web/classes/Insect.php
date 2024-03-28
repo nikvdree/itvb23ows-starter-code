@@ -15,4 +15,9 @@ abstract class Insect
     {
         return $this->name;
     }
+
+    public static function getMoves($board, $pos, $player): array
+    {
+        return [];
+    }
 }

@@ -47,6 +47,7 @@ class Game
             $this->hand = $this->players[$_SESSION['player']]->getHandArray();
             $this->currentPlayer = $_SESSION['player'];
         }
+        $_SESSION["error"]= print_r($this->board->getBoard(),  true);
         $this->playPieceMovesTo = $this->setPlayPieceMovesTo();
         $this->movePieceMovesTo = $this->setMovePieceMovesTo();
     }
@@ -57,6 +58,11 @@ class Game
     public function getBoard(): array
     {
         return $this->board->getBoard();
+    }
+
+    public function getBoardObject(): Board
+    {
+        return $this->board;
     }
 
     public function getPlayer($num): Player
@@ -199,5 +205,10 @@ class Game
     function len($tile): int
     {
         return $tile ? count($tile) : 0;
+    }
+
+    public function getPlayers(): array
+    {
+        return $this->players;
     }
 }

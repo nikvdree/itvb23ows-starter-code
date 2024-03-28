@@ -23,7 +23,16 @@ class Board
     public function move($from, $to, $player, $hand): void
     {
         $board = $this->getBoard();
-
+        if ($this->pieceOn($from) == 'G'){
+            foreach (Grasshopper::getMoves($board, $from, $player) as $move){
+                if ($move == $to){
+                    $board[$to][0] = $board[$from][0];
+                    unset($board[$from]);
+                    $_SESSION['board'] = $board;
+                    return;
+                }
+            }
+        }
         if (!isset($board[$from]))
             $_SESSION['error'] = 'Board position is empty';
         elseif ($board[$from][count($board[$from]) - 1][0] != $player)
@@ -102,6 +111,7 @@ class Board
             $_SESSION['player'] = 1 - $_SESSION['player'];
             $_SESSION['last_move'] = $this->db->playMove($_SESSION['game_id'], $piece, $to, $this->db->getState($_SESSION['game_id']), $_SESSION['last_move']);
         }
+        $this->board = $_SESSION['board'];
     }
 
     function isNeighbour($a, $b): bool
@@ -179,5 +189,9 @@ class Board
             }
         }
         return false;
+    }
+
+    function pieceOn($square){
+        return $this->getBoard()[$square][0][1];
     }
 }
