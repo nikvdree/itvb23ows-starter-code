@@ -84,6 +84,7 @@ class Board
                 } else {
                     $board[$to] = [$tile];
                 }
+                unset($board[$from]);
                 $_SESSION['player'] = 1 - $_SESSION['player'];
                 $_SESSION['last_move'] = $this->db->movePiece($_SESSION['game_id'], $from, $to, $_SESSION['last_move']);
             }

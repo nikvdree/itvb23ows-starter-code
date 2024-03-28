@@ -26,7 +26,7 @@ class GrasshopperTest extends TestCase
             0 => "Q",
             1 => "G",
         ), $game->getPlayers());
-        $game->getBoardObject()->move("0,1", "0,-2", 1, $game->getPlayers()[1]->getHandArray());
         $this->assertEquals(["0,-2"], Grasshopper::getMoves($game->getBoardObject()->getBoard(), "0,1", 1)[1]);
+        $game->getBoardObject()->move("0,1", "0,-2", 1, $game->getPlayers()[1]->getHandArray());
     }
 }
