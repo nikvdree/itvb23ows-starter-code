@@ -3,38 +3,43 @@
 
 use PHPUnit\Framework\TestCase;
 
-include_once '../Game.php';
+include_once '../classes/Game.php';
 
 class GameTest extends TestCase
 {
 
     public function testGetPlayer()
     {
-        $game = new classes\Game();
+        $db = new classes\DBO();
+        $game = new classes\Game($db);
         $this->assertEquals(0, $game->getCurrentPlayer());
     }
     public function testGetHand()
     {
-        $game = new classes\Game();
-        $this->assertEquals(22, len($game->getHand()));
+        $db = new classes\DBO();
+        $game = new classes\Game($db);
+        $this->assertEquals(11, $game->len($game->getHand()));
     }
 
     public function testGetBoard()
     {
-        $game = new classes\Game();
+        $db = new classes\DBO();
+        $game = new classes\Game($db);
         $this->assertEquals([], $game->getBoard());
     }
 
     public function testGetMovesTo()
     {
-        $game = new classes\Game();
+        $db = new classes\DBO();
+        $game = new classes\Game($db);
         $this->assertEquals(Array (
             0 => '0,0'
         ), $game->getPlayPieceMovesTo());
     }
 
     public function testRestart(){
-        $game = new classes\Game();
+        $db = new classes\DBO();
+        $game = new classes\Game($db);;
         $_POST['piece'] = 'Q';
         $_POST['to'] = '0,0';
         $game->play();
@@ -43,12 +48,14 @@ class GameTest extends TestCase
     }
 
     public function testCreateGame(){
-        $game = new classes\Game();
+        $db = new classes\DBO();
+        $game = new classes\Game($db);
         $this->assertEquals([], $game->getBoard());
     }
 
     public function testPlay(){
-        $game = new classes\Game();
+        $db = new classes\DBO();
+        $game = new classes\Game($db);
         $_POST['piece'] = 'Q';
         $_POST['to'] = '0,0';
         $game->play();
@@ -60,5 +67,18 @@ class GameTest extends TestCase
                 )
             )
         ), $_SESSION['board']);
+    }
+
+    public function testGetPlayMovesTo(){
+        $db = new classes\DBO();
+        $game = new classes\Game($db);
+        $this->assertEquals(Array (
+            0 => '0,1',
+            1 => '0,-1',
+            2 => '1,0',
+            3 => '-1,0',
+            4 => '-1,1',
+            5 => '1,-1',
+        ), $game->getPlayPieceMovesTo());
     }
 }

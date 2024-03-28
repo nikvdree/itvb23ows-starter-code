@@ -6,7 +6,6 @@ use classes\PageBuilder;
 
 session_start();
 
-    include_once './util.php';
     include_once './classes/Game.php';
     include_once './classes/PageBuilder.php';
     include_once './classes/DBO.php';
