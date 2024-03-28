@@ -1,11 +1,13 @@
 <?php
 
+use classes\DBO;
 use classes\Game;
 
 session_start();
 
 include_once 'classes/Game.php';
 
-$game = new Game();
+$db = new DBO();
+$game = new Game($db);
 $game->move();
 header('Location: index.php');
