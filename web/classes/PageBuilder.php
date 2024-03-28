@@ -10,9 +10,9 @@ class PageBuilder
     private DBO $db;
     private Game $game;
 
-    public function __construct($game)
+    public function __construct($game, $db)
     {
-        $this->db = new DBO();
+        $this->db = $db;
         $this->game = $game;
     }
 

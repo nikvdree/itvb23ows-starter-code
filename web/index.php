@@ -9,8 +9,9 @@ session_start();
     include_once './classes/Game.php';
     include_once './classes/PageBuilder.php';
 
-    $game = new Game();
-    $pageBuilder = new PageBuilder($game);
+    $db = new DBO();
+    $game = new Game($db);
+    $pageBuilder = new PageBuilder($game, $db);
     $WHITE = 0;
     $BLACK = 1;
 

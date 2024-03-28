@@ -18,9 +18,9 @@ class Game
     private array $hand;
     private array $pieceMovesTo;
 
-    function __construct()
+    function __construct($db)
     {
-        $this->db = new DBO();
+        $this->db = $db;
         $this->createGame();
     }
 
