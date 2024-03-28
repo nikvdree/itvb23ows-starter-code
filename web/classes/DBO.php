@@ -9,7 +9,8 @@ class DBO
 
     function __construct()
     {
-        $db = new mysqli('127.0.0.1', 'root', 'root', 'hive');
+        $db = new mysqli('sql-server', 'root', 'root', 'hive'); //for docker
+//        $db = new mysqli('127.0.0.1', 'root', 'root', 'hive'); //for local testing
         if ($db->connect_error) {
             die("Connection failed: " . $db->connect_error);
         }
