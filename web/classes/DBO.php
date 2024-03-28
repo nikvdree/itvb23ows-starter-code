@@ -45,10 +45,12 @@ class DBO
     public function undoMove($lastMove)
     {
         $db = $this->db;
-        $stmt = $db->prepare('SELECT * FROM moves WHERE id = ' . $lastMove);
+        $stmt = $db->prepare('SELECT * FROM moves WHERE id = ?');
+        $stmt->bind_param('i', $lastMove);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_array();
-        $deletion = $db->prepare('DELETE FROM moves WHERE id=' . $lastMove);
+        $deletion = $db->prepare('DELETE FROM moves WHERE id= ?');
+        $deletion->bind_param('i', $lastMove);
         $deletion->execute();
         return $result['state'];
     }
@@ -65,7 +67,8 @@ class DBO
     public function getMoves($gameId)
     {
         $db = $this->db;
-        $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = ' . $gameId);
+        $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = ?');
+        $stmt->bind_param('i', $gameId);
         $stmt->execute();
         return $stmt->get_result();
     }
@@ -73,7 +76,8 @@ class DBO
     public function getState($gameId)
     {
         $db = $this->db;
-        $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = ' . $gameId . ' ORDER BY id DESC LIMIT 1');
+        $stmt = $db->prepare('SELECT * FROM moves WHERE game_id = ? ORDER BY id DESC LIMIT 1');
+        $stmt->bind_param('i', $gameId);
         $stmt->execute();
         return $stmt->get_result()->fetch_array()['state'];
     }
