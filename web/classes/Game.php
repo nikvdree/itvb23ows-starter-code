@@ -33,7 +33,6 @@ class Game
             $this->currentPlayer = 0;
             $this->players = [new Player(0), new Player(1)];
             $this->hand = [0 => $this->players[0]->getHandArray(), 1 => $this->players[1]->getHandArray()];
-            $_SESSION['error'] = 'Creating Game: ' . $this->game_id;
             $_SESSION['board'] = $this->board->getBoard();
             $_SESSION['player'] = $this->players[$this->currentPlayer]->getPlayer();
             $_SESSION['game_id'] = $this->game_id;
@@ -47,7 +46,6 @@ class Game
             $this->hand = $this->players[$_SESSION['player']]->getHandArray();
             $this->currentPlayer = $_SESSION['player'];
         }
-        $_SESSION["error"]= print_r($this->board->getBoard(),  true);
         $this->playPieceMovesTo = $this->setPlayPieceMovesTo();
         $this->movePieceMovesTo = $this->setMovePieceMovesTo();
     }
