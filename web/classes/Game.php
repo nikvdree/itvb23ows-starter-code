@@ -97,10 +97,23 @@ class Game
     private function setPieceMovesTo()
     {
         $to = [];
-        foreach ($GLOBALS['OFFSETS'] as $pq) {
+        foreach ($GLOBALS['OFFSETS'] as $offset) {
             foreach (array_keys($this->board->getBoard()) as $pos) {
-                $pq2 = explode(',', $pos);
-                $to[] = ($pq[0] + $pq2[0]) . ',' . ($pq[1] + $pq2[1]);
+                $boardpos = explode(',', $pos);
+                $loc = ($offset[0] + $boardpos[0]) . ',' . ($offset[1] + $boardpos[1]);
+                if (isset($this->board->getBoard()[$loc])) {
+                    continue;
+                }
+                if (count($this->board->getBoard()) && !hasNeighBour($loc, $this->board->getBoard())) {
+                    continue;
+                }
+                if (len($this->players[$this->currentPlayer]->getHandArray()) < 11 && !neighboursAreSameColor($this->currentPlayer, $loc, $this->board->getBoard())) {
+                    continue;
+                }
+                if ($this->players[$this->currentPlayer]->hasQueen() && len($this->players[$this->currentPlayer]->getHandArray()) <= 8) {
+                    continue;
+                }
+                $to[] = $loc;
             }
         }
         $to = array_unique($to);
@@ -214,12 +227,14 @@ class Game
 
     public function restart(): void
     {
-        $_SESSION['board'] = [];
-        $_SESSION['hand'] = [0 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3], 1 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3]];
-        $_SESSION['player'] = 0;
-        $_SESSION['last_move'] = 0;
-        $_SESSION['error'] = '';
-        $_SESSION['game_id'] = $this->createGame();
+        unset($_SESSION['board']);
+        unset($_SESSION['hand']);
+        unset($_SESSION['player']);
+        unset($_SESSION['last_move']);
+        unset($_SESSION['error']);
+        unset($_SESSION['game_id']);
+        $this->createGame();
+        header('Location: index.php');
     }
 
     public function undo(): void
