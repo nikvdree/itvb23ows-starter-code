@@ -65,7 +65,7 @@ class PageBuilder
 
     public function printMoveTo()
     {
-        foreach ($this->game->getMovesTo() as $pos) {
+        foreach ($this->game->getMovePieceMovesTo() as $pos) {
             echo "<option value=\"$pos\">$pos</option>";
         }
     }
@@ -82,7 +82,7 @@ class PageBuilder
 
     public function printPlayTo()
     {
-        foreach ($this->game->getMovesTo() as $pos) {
+        foreach ($this->game->getPlayPieceMovesTo() as $pos) {
             if (empty($this->game->getBoard())) {
                 echo "<option value=\"$pos\">$pos</option>";
             } elseif (!in_array($pos, $this->game->getBoard())) {

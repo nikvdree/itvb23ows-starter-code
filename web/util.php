@@ -51,6 +51,9 @@ function slide($board, $from, $to) {
             $common[] = $p.",".$q;
             }
     }
+    if (!(isset($board[$common[0]]) && isset($board[$common[1]]) && isset($board[$from]) && isset($board[$to]))){
+        return false;
+    }
     if (!$board[$common[0]] && !$board[$common[1]] && !$board[$from] && !$board[$to]){
         return false;
     }

@@ -16,7 +16,8 @@ class Game
     private int $game_id;
     private DBO $db;
     private array $hand;
-    private array $pieceMovesTo;
+    private array $playPieceMovesTo;
+    private array $movePieceMovesTo;
 
     function __construct($db)
     {
@@ -46,7 +47,8 @@ class Game
             $this->hand = $this->players[$_SESSION['player']]->getHandArray();
             $this->currentPlayer = $_SESSION['player'];
         }
-        $this->pieceMovesTo = $this->setPieceMovesTo();
+        $this->playPieceMovesTo = $this->setPlayPieceMovesTo();
+        $this->movePieceMovesTo = $this->setMovePieceMovesTo();
     }
 
     /**
@@ -89,12 +91,12 @@ class Game
     /**
      * @return array
      */
-    public function getMovesTo(): array
+    public function getPlayPieceMovesTo(): array
     {
-        return $this->pieceMovesTo;
+        return $this->playPieceMovesTo;
     }
 
-    private function setPieceMovesTo()
+    private function setPlayPieceMovesTo()
     {
         $to = [];
         foreach ($GLOBALS['OFFSETS'] as $offset) {
@@ -151,6 +153,31 @@ class Game
         }
     }
 
+    /**
+     * @return array
+     */
+    public function getMovePieceMovesTo(): array
+    {
+        return $this->movePieceMovesTo;
+    }
+
+    private function setMovePieceMovesTo()
+    {
+        $to = [];
+        foreach ($GLOBALS['OFFSETS'] as $offset) {
+            foreach (array_keys($this->board->getBoard()) as $pos) {
+                $boardpos = explode(',', $pos);
+                $loc = ($offset[0] + $boardpos[0]) . ',' . ($offset[1] + $boardpos[1]);
+                $to[] = $loc;
+            }
+        }
+        $to = array_unique($to);
+        if (!count($to)) {
+            $to[] = '0,0';
+        }
+        return $to;
+    }
+
     public function move(): void
     {
         $from = $_POST['from'];
@@ -195,7 +222,8 @@ class Game
                         $_SESSION['error'] = 'Tile not empty';
                     } elseif ($tile[1] == "Q" || $tile[1] == "B") {
                         if (!slide($board, $from, $to))
-                            $_SESSION['error'] = 'Tile must slide';
+                            if (len($board) > 2)
+                                $_SESSION['error'] = 'Tile must slide';
                     }
                 }
             }

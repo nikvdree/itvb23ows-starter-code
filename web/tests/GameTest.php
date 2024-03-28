@@ -30,7 +30,7 @@ class GameTest extends TestCase
         $game = new classes\Game();
         $this->assertEquals(Array (
             0 => '0,0'
-        ), $game->getMovesTo());
+        ), $game->getPlayPieceMovesTo());
     }
 
     public function testRestart(){

@@ -17,7 +17,7 @@ session_start();
     $WHITE = 0;
     $BLACK = 1;
 
-    $to = $game->getMovesTo();
+    $to = $game->getPlayPieceMovesTo();
 ?>
 <!DOCTYPE html>
 <html lang="utf-8">
