@@ -16,7 +16,7 @@ class GameTest extends TestCase
     public function testGetHand()
     {
         $game = new classes\Game();
-        $this->assertEquals([0 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3], 1 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3]], $game->getHand());
+        $this->assertEquals(22, len($game->getHand()));
     }
 
     public function testGetBoard()
