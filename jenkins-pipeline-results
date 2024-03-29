@@ -1,0 +1,274 @@
+Started by user unknown or anonymous
+Obtained Jenkinsfile from git https://github.com/nikvdree/itvb23ows-starter-code
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/pipe
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/pipe/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/nikvdree/itvb23ows-starter-code # timeout=10
+Fetching upstream changes from https://github.com/nikvdree/itvb23ows-starter-code
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.2'
+ > git fetch --tags --force --progress -- https://github.com/nikvdree/itvb23ows-starter-code +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision a3f9537728c128f3e0f25f80d486724d1010728a (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f a3f9537728c128f3e0f25f80d486724d1010728a # timeout=10
+Commit message: "Update Jenkinsfile"
+ > git rev-list --no-walk a3f9537728c128f3e0f25f80d486724d1010728a # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] echo
+Checking out
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/pipe/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/nikvdree/itvb23ows-starter-code # timeout=10
+Fetching upstream changes from https://github.com/nikvdree/itvb23ows-starter-code
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.2'
+ > git fetch --tags --force --progress -- https://github.com/nikvdree/itvb23ows-starter-code +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision a3f9537728c128f3e0f25f80d486724d1010728a (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f a3f9537728c128f3e0f25f80d486724d1010728a # timeout=10
+Commit message: "Update Jenkinsfile"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] echo
+Building
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Unit Tests)
+[Pipeline] sh
++ php /var/www/html/vendor/bin/phpunit /var/www/html/tests --configuration /var/www/html/tests/phpunit.xml
+PHPUnit 10.5.11 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.7
+Configuration: /var/www/html/tests/phpunit.xml
+
+.....W.W.W......                                                  16 / 16 (100%)PHP Warning:  file_put_contents(/var/www/html/tests/.phpunit.result.cache): Failed to open stream: Permission denied in /var/www/html/vendor/phpunit/phpunit/src/Runner/ResultCache/DefaultResultCache.php on line 140
+
+
+Time: 00:00.044, Memory: 8.00 MB
+
+OK, but there were issues!
+Tests: 16, Assertions: 20, Warnings: 2.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (SonarQube)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] tool
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] withSonarQubeEnv
+Injecting SonarQube environment variables using the configuration: SonarQube
+[Pipeline] {
+[Pipeline] sh
++ /var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube_Scanner/bin/sonar-scanner -Dsonar.projectKey=sonar
+INFO: Scanner configuration file: /var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube_Scanner/conf/sonar-scanner.properties
+INFO: Project root configuration file: NONE
+INFO: SonarScanner 5.0.1.3006
+INFO: Java 17.0.10 Eclipse Adoptium (64-bit)
+INFO: Linux 5.10.16.3-microsoft-standard-WSL2 amd64
+INFO: User cache: /var/jenkins_home/.sonar/cache
+INFO: Analyzing on SonarQube server 10.4.1.88267
+INFO: Default locale: "en", source code encoding: "UTF-8" (analysis is platform dependent)
+INFO: Load global settings
+INFO: Load global settings (done) | time=61ms
+INFO: Server id: 147B411E-AY6J6-smewVSHfZpIzrX
+INFO: User cache: /var/jenkins_home/.sonar/cache
+WARN: sonar.plugins.downloadOnlyRequired is false, so ALL available plugins will be downloaded
+INFO: Loading all plugins
+INFO: Load plugins index
+INFO: Load plugins index (done) | time=39ms
+INFO: Load/download plugins
+INFO: Load/download plugins (done) | time=1178ms
+INFO: Process project properties
+INFO: Process project properties (done) | time=0ms
+INFO: Execute project builders
+INFO: Execute project builders (done) | time=1ms
+INFO: Project key: sonar
+INFO: Base dir: /var/jenkins_home/workspace/pipe
+INFO: Working dir: /var/jenkins_home/workspace/pipe/.scannerwork
+INFO: Load project settings for component key: 'sonar'
+INFO: Load quality profiles
+INFO: Load quality profiles (done) | time=70ms
+INFO: Auto-configuring with CI 'Jenkins'
+INFO: Load active rules
+INFO: Load active rules (done) | time=5987ms
+INFO: Load analysis cache
+INFO: Load analysis cache (404) | time=6ms
+INFO: Preprocessing files...
+INFO: 7 languages detected in 44 preprocessed files
+INFO: 0 files ignored because of scm ignore settings
+INFO: Load project repositories
+INFO: Load project repositories (done) | time=6ms
+INFO: Indexing files...
+INFO: Project configuration:
+INFO: 44 files indexed
+INFO: Quality profile for css: Sonar way
+INFO: Quality profile for docker: Sonar way
+INFO: Quality profile for json: Sonar way
+INFO: Quality profile for php: Sonar way
+INFO: Quality profile for py: Sonar way
+INFO: Quality profile for xml: Sonar way
+INFO: Quality profile for yaml: Sonar way
+INFO: ------------- Run sensors on module sonar
+INFO: Load metrics repository
+INFO: Load metrics repository (done) | time=22ms
+INFO: Sensor Python Sensor [python]
+WARN: Your code is analyzed as compatible with all Python 3 versions by default. You can get a more precise analysis by setting the exact Python version in your configuration via the parameter "sonar.python.version"
+INFO: Starting global symbols computation
+INFO: 3 source files to be analyzed
+INFO: 3/3 source files have been analyzed
+INFO: Starting rules execution
+INFO: 3 source files to be analyzed
+INFO: 3/3 source files have been analyzed
+INFO: The Python analyzer was able to leverage cached data from previous analyses for 0 out of 3 files. These files were not parsed.
+INFO: Sensor Python Sensor [python] (done) | time=929ms
+INFO: Sensor Cobertura Sensor for Python coverage [python]
+INFO: Sensor Cobertura Sensor for Python coverage [python] (done) | time=6ms
+INFO: Sensor PythonXUnitSensor [python]
+INFO: Sensor PythonXUnitSensor [python] (done) | time=2ms
+INFO: Sensor JaCoCo XML Report Importer [jacoco]
+INFO: 'sonar.coverage.jacoco.xmlReportPaths' is not defined. Using default locations: target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,build/reports/jacoco/test/jacocoTestReport.xml
+INFO: No report imported, no coverage information will be imported by JaCoCo XML Report Importer
+INFO: Sensor JaCoCo XML Report Importer [jacoco] (done) | time=2ms
+INFO: Sensor IaC CloudFormation Sensor [iac]
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: Sensor IaC CloudFormation Sensor [iac] (done) | time=10ms
+INFO: Sensor IaC Kubernetes Sensor [iac]
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: Sensor IaC Kubernetes Sensor [iac] (done) | time=44ms
+INFO: Sensor IaC AzureResourceManager Sensor [iac]
+INFO: 0 source files to be analyzed
+INFO: 0/0 source files have been analyzed
+INFO: Sensor IaC AzureResourceManager Sensor [iac] (done) | time=50ms
+INFO: Sensor JavaScript inside YAML analysis [javascript]
+INFO: No input files found for analysis
+INFO: Hit the cache for 0 out of 0
+INFO: Miss the cache for 0 out of 0
+INFO: Sensor JavaScript inside YAML analysis [javascript] (done) | time=4ms
+INFO: Sensor CSS Rules [javascript]
+INFO: Detected os: Linux arch: amd64 alpine: false. Platform: LINUX_X64
+INFO: Using embedded Node.js runtime
+INFO: Using Node.js executable: '/var/jenkins_home/.sonar/js/node-runtime/node'.
+INFO: Memory configuration: OS (15951 MB), Node.js (4144 MB).
+INFO: 1 source file to be analyzed
+INFO: 1/1 source file has been analyzed
+INFO: Hit the cache for 0 out of 0
+INFO: Miss the cache for 0 out of 0
+INFO: Sensor CSS Rules [javascript] (done) | time=6245ms
+INFO: Sensor CSS Metrics [javascript]
+INFO: Sensor CSS Metrics [javascript] (done) | time=10ms
+INFO: Sensor C# Project Type Information [csharp]
+INFO: Sensor C# Project Type Information [csharp] (done) | time=1ms
+INFO: Sensor C# Analysis Log [csharp]
+INFO: Sensor C# Analysis Log [csharp] (done) | time=12ms
+INFO: Sensor C# Properties [csharp]
+INFO: Sensor C# Properties [csharp] (done) | time=1ms
+INFO: Sensor HTML [web]
+INFO: Sensor HTML [web] (done) | time=30ms
+INFO: Sensor XML Sensor [xml]
+INFO: 1 source file to be analyzed
+INFO: 1/1 source file has been analyzed
+INFO: Sensor XML Sensor [xml] (done) | time=99ms
+INFO: Sensor PHP sensor [php]
+INFO: Starting PHP symbol indexer
+INFO: 21 source files to be analyzed
+INFO: 21/21 source files have been analyzed
+INFO: Cached information of global symbols will be used for 0 out of 21 files. Global symbols were recomputed for the remaining files.
+INFO: Starting PHP rules
+INFO: 21 source files to be analyzed
+INFO: 21/21 source files have been analyzed
+INFO: The PHP analyzer was able to leverage cached data from previous analyses for 0 out of 21 files. These files were not parsed.
+INFO: Sensor PHP sensor [php] (done) | time=979ms
+INFO: Sensor Analyzer for "php.ini" files [php]
+INFO: Sensor Analyzer for "php.ini" files [php] (done) | time=2ms
+INFO: Sensor PHPUnit report sensor [php]
+INFO: No PHPUnit tests reports provided (see 'sonar.php.tests.reportPath' property)
+INFO: No PHPUnit coverage reports provided (see 'sonar.php.coverage.reportPaths' property)
+WARN: PHPUnit test cases are detected. Make sure to specify test sources via `sonar.test` to get more precise analysis results.
+INFO: Sensor PHPUnit report sensor [php] (done) | time=2ms
+INFO: Sensor TextAndSecretsSensor [text]
+INFO: 32 source files to be analyzed
+INFO: 32/32 source files have been analyzed
+INFO: Sensor TextAndSecretsSensor [text] (done) | time=502ms
+INFO: Sensor VB.NET Project Type Information [vbnet]
+INFO: Sensor VB.NET Project Type Information [vbnet] (done) | time=1ms
+INFO: Sensor VB.NET Analysis Log [vbnet]
+INFO: Sensor VB.NET Analysis Log [vbnet] (done) | time=12ms
+INFO: Sensor VB.NET Properties [vbnet]
+INFO: Sensor VB.NET Properties [vbnet] (done) | time=0ms
+INFO: Sensor IaC Docker Sensor [iac]
+INFO: 4 source files to be analyzed
+INFO: 4/4 source files have been analyzed
+INFO: Sensor IaC Docker Sensor [iac] (done) | time=116ms
+INFO: ------------- Run sensors on project
+INFO: Sensor Analysis Warnings import [csharp]
+INFO: Sensor Analysis Warnings import [csharp] (done) | time=1ms
+INFO: Sensor Zero Coverage Sensor
+INFO: Sensor Zero Coverage Sensor (done) | time=10ms
+INFO: SCM Publisher SCM provider for this project is: git
+INFO: SCM Publisher 29 source files to be analyzed
+INFO: SCM Publisher 29/29 source files have been analyzed (done) | time=154ms
+INFO: CPD Executor 10 files had no CPD blocks
+INFO: CPD Executor Calculating CPD for 14 files
+INFO: CPD Executor CPD calculation finished (done) | time=9ms
+INFO: Analysis report generated in 47ms, dir size=356.4 kB
+INFO: Analysis report compressed in 41ms, zip size=143.8 kB
+INFO: Analysis report uploaded in 244ms
+INFO: ANALYSIS SUCCESSFUL, you can find the results at: http://sonar:9000/dashboard?id=sonar
+INFO: Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+INFO: More about the report processing at http://sonar:9000/api/ce/task?id=64ef136b-5135-48ca-b645-344cceebf84b
+INFO: Analysis total time: 18.142 s
+INFO: ------------------------------------------------------------------------
+INFO: EXECUTION SUCCESS
+INFO: ------------------------------------------------------------------------
+INFO: Total time: 20.418s
+INFO: Final Memory: 29M/128M
+INFO: ------------------------------------------------------------------------
+[Pipeline] }
+[Pipeline] // withSonarQubeEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] echo
+Deploying
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Succes!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
