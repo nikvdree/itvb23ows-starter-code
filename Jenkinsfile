@@ -12,16 +12,9 @@ pipeline {
                 echo 'Building'
             }
         }
-        stage('JUnit'){
+        stage('Unit Tests'){
             steps {
-                echo 'JUnit'
                 sh 'php /var/www/html/vendor/bin/phpunit /var/www/html/tests --configuration /var/www/html/tests/phpunit.xml'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing'
-                sh '/var/www/html/vendor/bin/phpunit /var/www/html/tests --configuration /var/www/html/tests/phpunit.xml'
             }
         }
         stage('SonarQube') {
