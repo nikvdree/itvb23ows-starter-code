@@ -7,15 +7,16 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build') {
+        stage('Add Permissions') {
             steps {
-                echo 'Building'
+                echo 'Adding permissions'
+                sh 'chmod -R 777 /var/www/html'
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing'
-                sh '/var/www/html/vendor/phpunit /var/www/html/tests --configuration /var/www/html/phpunit.xml'
+                sh '/var/www/html/vendor/phpunit /var/www/html/tests --configuration /var/www/html/tests/phpunit.xml'
             }
         }
         stage('SonarQube') {
