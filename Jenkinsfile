@@ -7,10 +7,9 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Add Permissions') {
+        stage('Build') {
             steps {
-                echo 'Adding permissions'
-                sh 'chmod -R 777 /var/www/html'
+                echo 'Building'
             }
         }
         stage('Test') {
