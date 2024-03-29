@@ -15,7 +15,9 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing'
-                sh '/var/www/html/vendor/phpunit /var/www/html/tests --configuration /var/www/html/tests/phpunit.xml'
+                sh "composer install --working-dir /var/www/html"
+                sh "chmod +x /var/www/html/vendor/bin/phpunit"
+                sh '/var/www/html/vendor/bin/phpunit /var/www/html/tests --configuration /var/www/html/tests/phpunit.xml'
             }
         }
         stage('SonarQube') {
