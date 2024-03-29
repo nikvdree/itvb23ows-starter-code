@@ -13,5 +13,7 @@ RUN apt-get update \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ENV PATH="/usr/local/bin/composer/vendor/bin:${PATH}"
+RUN composer global require phpunit/phpunit
+RUN composer install
 
 USER jenkins
